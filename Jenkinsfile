@@ -6,39 +6,36 @@ pipeline {
         
     }
 
-        stage('Login to docker hub') {
+      stage('Login to docker hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                sh 'echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin'}
+                    sh 'echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin'
+                }
                 echo 'Login successfully'
             }
         }
 
-        stage('Build Docker Image')
-        {
-            steps
-            {
+        stage('Build Docker Image') {
+            steps {
                 sh 'docker build -t ${IMAGE_TAG} .'
                 echo "Docker image build successfully"
                 sh 'docker image ls'
-                
             }
         }
 
-        stage('Push Docker Image')
-        {
-            steps
-            {
+        stage('Push Docker Image') {
+            steps {
                 sh 'docker push ${IMAGE_TAG}'
                 echo "Docker image push successfully"
             }
         }
-		stage('Deploy Docker Image') {
+
+        stage('Deploy Docker Image') {
             steps {
                 script {
                     echo "Deploying Docker image ${IMAGE_TAG}"
                     sh "docker run -d ${IMAGE_TAG}"
                 }
             }
-        }	
+        }
     }
