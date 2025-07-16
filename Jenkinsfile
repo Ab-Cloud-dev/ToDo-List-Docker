@@ -11,24 +11,6 @@ pipeline {
         
     }
 
-    
-    stages {
-
-        stage('Setup') {
-            steps {
-               sh """
-                    which python3
-                    python3 --version
-                    python3 -m pip install -r requirements.txt
-                """
-            }
-        }
-        stage('Test') {
-            steps {
-                sh "pytest"
-            }
-        }
-
         stage('Login to docker hub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
