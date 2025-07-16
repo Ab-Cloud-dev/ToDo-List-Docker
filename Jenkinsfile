@@ -20,11 +20,6 @@ pipeline {
                 sh "docker run --rm -v ${WORKSPACE}:/app -w /app python:3.9-slim pytest"
             }
         }
-        stage('Test') {
-            steps {
-                sh "python3 -m pytest"
-            }
-        }
 
         stage('Login to docker hub') {
             steps {
