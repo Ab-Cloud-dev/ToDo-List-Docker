@@ -1,6 +1,10 @@
 pipeline {
     agent any
-
+  tools {
+        // This assumes you have Python configured as a tool in Jenkins
+        // Go to Manage Jenkins > Global Tool Configuration > Python
+        python 'python3'
+    }
     environment {
         IMAGE_NAME = 'mabd007/jenkins-flask-app'
         IMAGE_TAG = "${IMAGE_NAME}:${env.GIT_COMMIT}"
@@ -12,12 +16,12 @@ pipeline {
 
         stage('Setup') {
             steps {
-                sh "docker run --rm -v ${WORKSPACE}:/app -w /app python:3.9-slim pip install -r requirements.txt"
+                sh "pip install -r requirements.txt"
             }
         }
         stage('Test') {
             steps {
-                sh "docker run --rm -v ${WORKSPACE}:/app -w /app python:3.9-slim pytest"
+                sh "pytest"
             }
         }
 
