@@ -12,7 +12,12 @@ pipeline {
 
         stage('Setup') {
             steps {
-                sh "python3 -m pip install -r requirements.txt"
+                sh "docker run --rm -v ${WORKSPACE}:/app -w /app python:3.9-slim pip install -r requirements.txt"
+            }
+        }
+        stage('Test') {
+            steps {
+                sh "docker run --rm -v ${WORKSPACE}:/app -w /app python:3.9-slim pytest"
             }
         }
         stage('Test') {
