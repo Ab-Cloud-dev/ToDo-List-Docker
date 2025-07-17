@@ -9,15 +9,15 @@ pipeline {
     stages {
         stage('Build Docker Image') {
             steps {
-                sh 'sudo docker build -t ${IMAGE_TAG} .'
+                sh 'docker build -t ${IMAGE_TAG} .'
                 echo "Docker image build successfully"
-                sh 'sudo docker image ls'
+                sh 'docker image ls'
             }
         }
         stage('Push Docker Image') {
             steps {
-                sh 'sudo docker login -u ${DOCKERHUB_CREDENTIALS_USR} -p ${DOCKERHUB_CREDENTIALS_PSW}'
-                sh 'sudo docker push ${IMAGE_TAG}'
+                sh 'docker login -u ${DOCKERHUB_CREDENTIALS_USR} -p ${DOCKERHUB_CREDENTIALS_PSW}'
+                sh 'docker push ${IMAGE_TAG}'
 
 
             }
@@ -26,7 +26,7 @@ pipeline {
             steps {
                 script {
                     echo "Deploying Docker image ${IMAGE_TAG}"
-                    sh "sudo docker run -d ${IMAGE_TAG}"
+                    sh " docker run -d ${IMAGE_TAG}"
                 }
             }
         }
