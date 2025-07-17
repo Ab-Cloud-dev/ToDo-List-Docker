@@ -16,10 +16,10 @@ pipeline {
         }
         stage('Push Docker Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: '948e07d8-0f61-4e2d-9ccb-98e7518dffdf', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                    sh 'echo $DOCKER_PASSWORD | sudo docker login -u $DOCKER_USERNAME --password-stdin'
-                    sh 'sudo docker push ${IMAGE_TAG}'
-                }
+                sh 'sudo docker login -u ${DOCKERHUB_CREDENTIALS_USR} -p ${DOCKERHUB_CREDENTIALS_PSW}'
+                sh 'sudo docker push ${IMAGE_TAG}'
+
+
             }
         }
         stage('Deploy Docker Image') {
