@@ -23,7 +23,6 @@ pipeline {
           sh 'sudo docker push ${IMAGE_TAG}'
         }
       }
-        }
 
         stage('Deploy Docker Image') {
             steps {
