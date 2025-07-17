@@ -26,7 +26,7 @@ pipeline {
             steps {
                 script {
                     echo "Deploying Docker image ${IMAGE_TAG}"
-                    sh " docker run -d ${IMAGE_TAG}"
+                   sh "docker run -d -p 5000:5003 --name flask-app-${IMAGE_TAG}"
                 }
             }
         }
