@@ -3,17 +3,11 @@ pipeline {
     environment {
         IMAGE_NAME = 'mabd007/jenkins-flask-app'
         IMAGE_TAG = "${IMAGE_NAME}:${env.GIT_COMMIT}"
+        DOCKERHUB_CREDENTIALS = credentials('f9585099-9057-4c77-91df-f2a03e9ee358')
         
     }
 
-      stage('Login to docker hub') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-creds', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh 'echo ${PASSWORD} | docker login -u ${USERNAME} --password-stdin'
-                }
-                echo 'Login successfully'
-            }
-        }
+
 
         stage('Build Docker Image') {
             steps {
@@ -25,9 +19,10 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                sh 'docker push ${IMAGE_TAG}'
-                echo "Docker image push successfully"
-            }
+          sh 'sudo docker login -u ${DOCKERHUB_CREDENTIALS_USR} -p ${DOCKERHUB_CREDENTIALS_PSW}'
+          sh 'sudo docker push ${IMAGE_TAG}'
+        }
+      }
         }
 
         stage('Deploy Docker Image') {
